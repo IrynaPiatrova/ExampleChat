@@ -1,6 +1,7 @@
 package com.courses.progect.servlets;
 
 import com.courses.progect.classes.Chat;
+import com.courses.progect.classes.Message;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -8,23 +9,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Map;
 
 /**
- * Created by Irina Petrova on 18.05.2017.
+ * Created by John on 25.05.2017.
  */
-@WebServlet("/Authentication")
-public class AuthenticationServlet extends HttpServlet {
-
-    private static final String USERNAME = "username";
-    private static final String LASTNAME = "lastname";
-
+@WebServlet("/addChat")
+public class AddChat extends HttpServlet {
+    private static final String FULLNAME = "name";
+    private static final String NAMECHAT = "nameChat";
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        String username = request.getParameter(USERNAME);
-        String lastname = request.getParameter(LASTNAME);
-        String full = username + " " + lastname;
-        request.setAttribute("fullname", full);
-        request.setAttribute("chat", new Chat().getChatters());
+        String name = request.getParameter(FULLNAME);
+        String nameChat = request.getParameter(NAMECHAT);
+        Chat chat = new Chat(nameChat);
+        chat.addChatter(new Message());
+        Map chatters = chat.getChatters();
+        request.setAttribute("fullname", name);
+        request.setAttribute("chat", chat.getChatters());
         request.getRequestDispatcher("jsps/conversation.jsp").forward(request, response);
     }
 
